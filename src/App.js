@@ -43,10 +43,10 @@ class App extends Component {
     // console.log(event.target);
 
     let newFoodObj = {
-      newFoodName: this.state.name,
-      newFoodCalories: this.state.calories,
-      newFoodImage: this.state.image,
-      newFoodQuantity: 0,
+      name: this.state.name,
+      calories: this.state.calories,
+      image: this.state.image,
+      quantity: 0,
     };
 
     let foodCopy = [...foods];
@@ -54,6 +54,7 @@ class App extends Component {
 
     this.setState({
       food: foodCopy,
+      showForm: false,
     });
   };
 
