@@ -7,6 +7,12 @@ import FoodBox from './components/FoodBox.js';
 class App extends Component {
   state = {
     food: [...foods],
+    showForm: false,
+    //for new food to be added
+    newFoodName: '',
+    newFoodCalories: '',
+    newFoodImage: '',
+    newFoodQuantity: '',
   };
 
   displayFood = () => {
@@ -24,29 +30,67 @@ class App extends Component {
     return displayFoodNow;
   };
 
-  addNewFood = (name, calories, image, quantity) => {
-    let newFood = {
-      name: name,
-      calories: calories,
-      image: image,
-      quantity: quantity,
-    };
-
-    let foodCopy = [...this.state.food];
-
-    foodCopy.push(newFood);
-
-    this.setState((food = foodCopy));
+  toggleButton = () => {
+    this.setState({
+      showForm: !this.state.showForm,
+    });
   };
 
-  displayForm = () => {};
+  submitButton = (event) => {
+    //to prevent submit refreshing the page -this is by default
+    event.preventDefault();
+
+    // console.log(event.target);
+
+    let newFoodObj = {
+      newFoodName: this.state.name,
+      newFoodCalories: this.state.calories,
+      newFoodImage: this.state.image,
+      newFoodQuantity: 0,
+    };
+
+    let foodCopy = [...foods];
+    foodCopy.unshift(newFoodObj);
+
+    this.setState({
+      food: foodCopy,
+    });
+  };
+
+  handleChange = (event) => {
+    // console.log(event.target.name);
+    this.setState({
+      //to create this function dinamic for all 3 properties of new food added we use the name value and use it as key -thats why we use []
+      [event.target.name]: event.target.value,
+    });
+  };
 
   render() {
     return (
       <div>
-        <button onClick={this.displayForm}>Add new food</button>
+        <button onClick={this.toggleButton}>Add new food</button>
+        {this.state.showForm ? (
+          <form onSubmit={this.submitButton}>
+            <label>Name</label>
+            <br />
+            <input onChange={this.handleChange} type="text" name="name" />
+            <br />
+            <label>Calories</label>
+            <br />
+            <input onChange={this.handleChange} type="number" name="calories" />
+            <br />
+            <label>ImageURL</label>
+            <br />
+            <input onChange={this.handleChange} type="text" name="image" />
+            <br />
+            <button type="submit" value="Submit">
+              submit
+            </button>
+          </form>
+        ) : (
+          ''
+        )}
         {this.displayFood()}
-        />
       </div>
     );
   }
